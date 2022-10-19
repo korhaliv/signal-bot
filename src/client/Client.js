@@ -67,6 +67,15 @@ class Client extends EventEmitter {
   }
 
   /**
+   * DBUS interface path
+   * @type {string}
+   * @readonly
+   */
+  get interfacePath() {
+    return `/org/asamk/Signal/_${this.settings.phoneNumber}`
+  }
+
+  /**
    * Connect to the signal-cli daemon over D-Bus.
    * @return {Promise<undefined>}
    */
@@ -100,6 +109,7 @@ class Client extends EventEmitter {
             debugLog("Received UnauthenticatedQuoteException error. Ignoring");
           }
         } else {
+          console.error(e);
           if (this.settings.debug) {
             debugLog("Disconnect");
           }

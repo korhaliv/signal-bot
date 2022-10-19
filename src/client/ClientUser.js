@@ -1,5 +1,9 @@
 "use strict";
 
+const dbus = require("dbus-next");
+const Message = dbus.Message;
+
+
 /**
  * The user that is being used by the client.
  */
@@ -28,12 +32,17 @@ class ClientUser {
    * Should always return `true`.
    * @return {Promise<boolean>}
    */
-  async getRegistrationStatus() {
-    try {
-      return await this.client._busInterface.isRegistered([this.client.settings.phoneNumber]);
-    } catch {
-      return this.client._busInterface.isRegistered(this.client.settings.phoneNumber);
-    }
+  getRegistrationStatus() {
+    const msg = new Message({
+      destination: "org.asamk.Signal",
+      path: this.client.interfacePath,
+      interface: "org.asamk.Signal",
+      member: "isRegistered",
+      signature: "s",
+      body: [this.client.settings.phoneNumber]
+    });
+
+    return this.client._bus.call(msg);
   }
 }
 
