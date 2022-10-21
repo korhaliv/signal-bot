@@ -104,12 +104,12 @@ class Client extends EventEmitter {
       try {
         await this.user.getRegistrationStatus();
       } catch (e) {
+        debugLog(e);
         if (e.reply?.body[0]?.includes("org.whispersystems.signalservice.internal.contacts.crypto.UnauthenticatedQuoteException")) {
           if (this.settings.debug) {
             debugLog("Received UnauthenticatedQuoteException error. Ignoring");
           }
         } else {
-          console.error(e);
           if (this.settings.debug) {
             debugLog("Disconnect");
           }
