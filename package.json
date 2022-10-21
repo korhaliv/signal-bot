@@ -22,7 +22,7 @@
   "author": "Vietbao Tran (TapuCosmo)",
   "license": "MIT",
   "dependencies": {
-    "dbus-next": "^0.9.1"
+    "dbus-next": "^0.10.2"
   },
   "devDependencies": {
     "docdash": "^1.2.0",

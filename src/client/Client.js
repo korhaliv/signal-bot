@@ -67,6 +67,15 @@ class Client extends EventEmitter {
   }
 
   /**
+   * DBUS interface path
+   * @type {string}
+   * @readonly
+   */
+  get interfacePath() {
+    return `/org/asamk/Signal/_${this.settings.phoneNumber}`
+  }
+
+  /**
    * Connect to the signal-cli daemon over D-Bus.
    * @return {Promise<undefined>}
    */
@@ -95,6 +104,7 @@ class Client extends EventEmitter {
       try {
         await this.user.getRegistrationStatus();
       } catch (e) {
+        debugLog(e);
         if (e.reply?.body[0]?.includes("org.whispersystems.signalservice.internal.contacts.crypto.UnauthenticatedQuoteException")) {
           if (this.settings.debug) {
             debugLog("Received UnauthenticatedQuoteException error. Ignoring");
