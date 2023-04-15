@@ -93,6 +93,12 @@ class Client extends EventEmitter {
 
     this._busInterface = interfaces.getInterface("org.asamk.Signal");
 
+    const isNonCriticalError = e => {
+      const bodyElement = e.reply?.body[0];
+      return bodyElement?.includes("org.whispersystems.signalservice.internal.contacts.crypto.UnauthenticatedQuoteException") ||
+          bodyElement?.includes("StatusCode: 4008");
+    };
+
     /**
      * Disconnect event.
      * Fires when the D-Bus connection is disconnected.
@@ -105,7 +111,7 @@ class Client extends EventEmitter {
         await this.user.getRegistrationStatus();
       } catch (e) {
         debugLog(e);
-        if (e.reply?.body[0]?.includes("org.whispersystems.signalservice.internal.contacts.crypto.UnauthenticatedQuoteException")) {
+        if (isNonCriticalError(e)) {
           if (this.settings.debug) {
             debugLog("Received UnauthenticatedQuoteException error. Ignoring");
           }
