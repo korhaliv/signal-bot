@@ -110,12 +110,12 @@ class Client extends EventEmitter {
       try {
         await this.user.getRegistrationStatus();
       } catch (e) {
-        debugLog(e);
         if (isNonCriticalError(e)) {
           if (this.settings.debug) {
-            debugLog("Received UnauthenticatedQuoteException error. Ignoring");
+            debugLog(`Ignoring error: ${e.reply?.body[0]}.`);
           }
         } else {
+          debugLog(e);
           if (this.settings.debug) {
             debugLog("Disconnect");
           }
